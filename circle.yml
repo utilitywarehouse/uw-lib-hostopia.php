@@ -1,0 +1,7 @@
+machine:
+  php:
+    version: 5.6.18
+
+test:
+  override:
+    - make test-spec

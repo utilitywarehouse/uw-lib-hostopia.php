@@ -1,0 +1,6 @@
+formatter.name: pretty
+suites:
+  integrated_solution_sdk:
+    src_path: src/
+    namespace: UtilityWarehouse\SDK
+    psr4_prefix: UtilityWarehouse\SDK
