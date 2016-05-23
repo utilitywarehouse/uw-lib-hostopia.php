@@ -65,4 +65,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
         ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Domain deleted')));
     }
+
+    /**
+     * @expectedException \UtilityWarehouse\SDK\Hostopia\Exception\NonExistentDomainException
+     */
+    public function testDeleteNonexistentDomain()
+    {
+        $domain = new DomainName('0@uwclub.net');
+
+        $this->service->deleteDomain($domain);
+    }
 }

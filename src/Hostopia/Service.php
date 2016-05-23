@@ -50,6 +50,10 @@ class Service
 
     public function deleteDomain(DomainName $domain)
     {
-        return $this->client->makeCall('delDomain', $this->primaryInfo, $domain);
+        try {
+            return $this->client->makeCall('delDomain', $this->primaryInfo, $domain);
+        } catch (SoapException $e) {
+            throw $this->mapper->fromSoapException($e);
+        }
     }
 }
