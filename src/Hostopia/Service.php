@@ -2,6 +2,8 @@
 
 namespace UtilityWarehouse\SDK\Hostopia;
 
+use UtilityWarehouse\SDK\Hostopia\Exception\Mapper\MapperInterface;
+use UtilityWarehouse\SDK\Hostopia\Exception\SoapException;
 use UtilityWarehouse\SDK\Hostopia\Model\DomainName;
 use UtilityWarehouse\SDK\Hostopia\Request\DomainInfo;
 use UtilityWarehouse\SDK\Hostopia\Request\PrimaryInfo;
@@ -16,6 +18,11 @@ class Service
     private $client;
 
     /**
+     * @var MapperInterface
+     */
+    private $mapper;
+
+    /**
      * @var PrimaryInfo
      */
     private $primaryInfo;
@@ -23,9 +30,10 @@ class Service
     /**
      * @param Client $client
      */
-    public function __construct(Client $client, $username, $password)
+    public function __construct(Client $client, MapperInterface $mapper, $username, $password)
     {
         $this->client = $client;
+        $this->mapper = $mapper;
         $this->primaryInfo = new PrimaryInfo($username, $password);
     }
 
@@ -33,7 +41,11 @@ class Service
     {
         $domainInfo = new DomainInfo(self::PACKAGE, $password);
 
-        return $this->client->makeCall('newDomain', $this->primaryInfo, $domain, $domainInfo);
+        try {
+            return $this->client->makeCall('newDomain', $this->primaryInfo, $domain, $domainInfo);       
+        } catch (SoapException $e) {
+            throw $this->mapper->fromSoapException($e);
+        }
     }
 
     public function deleteDomain(DomainName $domain)

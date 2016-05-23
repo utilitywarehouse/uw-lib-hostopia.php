@@ -2,7 +2,7 @@
 
 namespace UtilityWarehouse\SDK\Hostopia\Model;
 
-use UtilityWarehouse\SDK\Hostopia\Exception\ClientException;
+use UtilityWarehouse\SDK\Hostopia\Exception\HostopiaException;
 
 class DomainName
 {
@@ -24,15 +24,15 @@ class DomainName
     private function setDomainName($domainName)
     {
         if (empty($domainName)) {
-            throw new ClientException("Domain name shouldn't be empty");
+            throw new HostopiaException("Domain name shouldn't be empty");
         }
 
         if (false === filter_var($domainName, FILTER_VALIDATE_EMAIL)) {
-            throw new ClientException("Domain name should be in format: 000000@uwclub.net");
+            throw new HostopiaException("Domain name should be in format: 000000@uwclub.net");
         }
 
         if (false === is_numeric(explode('@', $domainName)[0])) {
-            throw new ClientException("Domain name should be in format: 000000@uwclub.net");
+            throw new HostopiaException("Domain name should be in format: 000000@uwclub.net");
         }
         
         $this->domainName = $domainName;

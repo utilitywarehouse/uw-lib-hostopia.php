@@ -2,7 +2,7 @@
 
 namespace UtilityWarehouse\SDK\Hostopia\Exception;
 
-class WSDLException extends SoapException
+class DomainAlreadyExistException extends HostopiaException
 {
 
 }

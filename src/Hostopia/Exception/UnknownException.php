@@ -2,7 +2,7 @@
 
 namespace UtilityWarehouse\SDK\Hostopia\Exception;
 
-class ClientException extends \Exception
+class UnknownException extends HostopiaException
 {
 
 }
