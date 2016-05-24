@@ -11,6 +11,7 @@ class Client
         'DomainInfo' => 'UtilityWarehouse\SDK\Hostopia\Request\DomainInfo',
         'PrimaryInfo' => 'UtilityWarehouse\SDK\Hostopia\Request\PrimaryInfo',
         'ReturnCode' => 'UtilityWarehouse\SDK\Hostopia\Response\ReturnCode',
+        'MailInfo' => 'UtilityWarehouse\SDK\Hostopia\Request\MailInfo'
     ];
 
     /**

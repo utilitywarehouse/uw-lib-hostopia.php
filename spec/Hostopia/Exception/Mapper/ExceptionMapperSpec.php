@@ -28,7 +28,7 @@ class ExceptionMapperSpec extends ObjectBehavior
 
         $this->fromSoapException($soapException)->shouldReturnAnInstanceOf(NonExistentDomainException::class);
     }
-
+    
     function it_maps_SoapException_to_UnknownException_for_uknown_exception_code(SoapException $soapException)
     {
         $soapException->getFaultCode()->willReturn('666');

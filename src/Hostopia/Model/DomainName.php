@@ -31,7 +31,7 @@ class DomainName
             throw new HostopiaException("Domain name should be in format: 000000@uwclub.net");
         }
 
-        if (false === is_numeric(explode('@', $domainName)[0])) {
+        if (false === ctype_digit(explode('@', $domainName)[0])) {
             throw new HostopiaException("Domain name should be in format: 000000@uwclub.net");
         }
         
