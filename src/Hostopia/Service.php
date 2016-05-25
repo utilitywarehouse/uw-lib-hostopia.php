@@ -78,4 +78,15 @@ class Service
             throw $this->mapper->fromSoapException($e);
         }
     }
+
+    public function changeMailPassword(EmailAccount $account, DomainName $domain)
+    {
+        $mailInfo = new MailInfo($account, $account->getPassword());
+
+        try {
+            return $this->client->makeCall('mailPwd', $this->primaryInfo, $domain, $mailInfo);
+        } catch (SoapException $e) {
+            throw $this->mapper->fromSoapException($e);
+        }
+    }
 }

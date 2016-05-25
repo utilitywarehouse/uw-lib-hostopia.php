@@ -114,6 +114,26 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Mail account deleted')));
     }
 
+    public function testChangeMailPassword()
+    {
+        $domain = $this->generateUniqueDomainName();
+        $this->createDomainName($domain);
+
+        $domainName = new DomainName($domain);
+
+        $email = sprintf("%s@uwclub.net", substr(md5(uniqid() . time()), 0, 10));
+
+        $this->createNewEmailAccount($email, $domainName);
+
+        $mailAccount = new EmailAccount($email, 'somePass');
+
+        $response = $this->service->changeMailPassword($mailAccount, $domainName);
+
+        ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
+        ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
+        ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Mail account password changed')));
+    }
+
     /**
      * @param string $domainName
      * @return ResponseInterface

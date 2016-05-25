@@ -21,6 +21,11 @@ class EmailAccountSpec extends ObjectBehavior
     {
         $this->shouldThrow(HostopiaException::class)->during('__construct', ['testdomain.com', 'password']);
     }
+
+    function it_validates_if_valid_password_is_given()
+    {
+        $this->shouldThrow(HostopiaException::class)->during('__construct', ['testdomain.com', '11']);
+    }
     
     function it_can_be_printed()
     {

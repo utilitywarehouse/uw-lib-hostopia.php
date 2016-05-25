@@ -34,11 +34,11 @@ class EmailAccount
         }
 
         if (false === filter_var($accountName, FILTER_VALIDATE_EMAIL)) {
-            throw new HostopiaException("Domain name should be in format: username@uwclub.net");
+            throw new HostopiaException("Account name should be in email format");
         }
 
         if ('uwclub.net' !== explode('@', $accountName)[1]) {
-            throw new HostopiaException("Domain name should be in format: username@uwclub.net");
+            throw new HostopiaException("Email should be at uwclub.net domain");
         }
 
         $this->accountName = $accountName;
@@ -46,6 +46,9 @@ class EmailAccount
     
     private function setPassword($password)
     {
+        if ($password & mb_strlen($password) < 3) {
+            throw new HostopiaException("Password should be at least 2 characters length");
+        }
         $this->password = $password;
     }
     
