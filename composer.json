@@ -9,11 +9,11 @@
     }
   ],
   "require": {
-    "php": ">=5.5.9"
+    "php": "^5.5"
   },
   "require-dev": {
     "phpspec/phpspec": "^2.5",
-    "phpunit/phpunit": "^5.3",
+    "phpunit/phpunit": "^4",
     "hamcrest/hamcrest-php": "^2.0"
   },
   "autoload": {
