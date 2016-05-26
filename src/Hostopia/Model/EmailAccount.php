@@ -46,7 +46,7 @@ class EmailAccount
     
     private function setPassword($password)
     {
-        if ($password & mb_strlen($password) < 3) {
+        if ($password && mb_strlen($password) < 3) {
             throw new HostopiaException("Password should be at least 2 characters length");
         }
         $this->password = $password;
