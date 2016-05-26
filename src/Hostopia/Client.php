@@ -36,9 +36,12 @@ class Client
         $this->soapOptions = $soapOptions;
     }
 
-    public function makeCall($method, ...$args)
+    public function makeCall($method)
     {
         $client = $this->getSoapClient();
+        
+        $args = func_get_args();
+        array_shift($args);
 
         try {
             return $client->__soapCall($method, $args);
