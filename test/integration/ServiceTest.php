@@ -21,7 +21,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $wsdl = dirname(__FILE__).'/../../resource/service.wsdl';
+        $wsdl = 'http://adminc45stage.carrierzone.com/rrad/server.php?wsdl';
         $client = new Client($wsdl, ['trace' => true]);
         $mapper = new ExceptionMapper();
 
