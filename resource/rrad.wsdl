@@ -1,0 +1,4149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<definitions name='RRAD'
+  targetNamespace='urn:RRAD'
+  xmlns:typens='urn:RRAD'
+  xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+  xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+  xmlns:soapenc='http://schemas.xmlsoap.org/soap/encoding/'
+  xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+  xmlns='http://schemas.xmlsoap.org/wsdl/' >
+
+	<!-- TYPES BEGIN -->
+
+	<types>
+	<xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:RRAD">
+		<xsd:complexType name="PrimaryInfo">
+		<xsd:all>
+			<xsd:element name="username" type="xsd:string"/>
+			<xsd:element name="password" type="xsd:string"/>
+			<xsd:element name="clientid" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="salesrep" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="ReturnCode">
+		<xsd:all>
+			<xsd:element name="success" type="xsd:boolean"/>
+			<xsd:element name="message" type="xsd:string"/>
+			<xsd:element name="number" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="data" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+<!-- add 20090406 for multiAccount-->
+	<xsd:complexType name="AccountSetting">
+		<xsd:all>
+			<xsd:element name="sendinvoice" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="sendstatement" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="sendnews" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="AccountInfo">
+		<xsd:all>
+			<xsd:element name="accountid" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="username" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="email" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="domain" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ftpuser" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+<!-- add 20090406 for Mailinglist-->
+<!-- add 20091112 for moderators flag-->
+	<xsd:complexType name="MailinglistInfo">
+		<xsd:all>
+			<xsd:element name="account" type="xsd:string" />
+			<xsd:element name="maintain" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="password" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="moderators" type="xsd:boolean" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+		<xsd:complexType name="DomainInfo">
+		<xsd:all>
+			<xsd:element name="password" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="package" type="xsd:string"/>
+			<xsd:element name="contact" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="linkto" type="xsd:string" minOccurs="0"/>
+<!-- add 20091127 for vms export to vms flag-->
+			<xsd:element name="flag" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="accountInfo" type="typens:AccountInfo" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+	<xsd:complexType name="NewServiceData">
+		<xsd:all>
+		<xsd:element name="username" type="xsd:string" minOccurs="0"/>
+		<xsd:element name="password" type="xsd:string" minOccurs="0"/>
+		<xsd:element name="number" type="xsd:string" minOccurs="0"/>
+		<xsd:element name="id" type="xsd:string" minOccurs="0"/>
+		<xsd:element name="language" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+		<xsd:complexType name="NewService">
+		<xsd:all>
+			<xsd:element name="service" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="username" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="password" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="quantity" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="discount" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="oldsid" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="data" type="typens:NewServiceData" minOccurs="0">
+			</xsd:element>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="NewForward">
+		<xsd:all>
+			<xsd:element name="url" type="xsd:string"/>
+			<xsd:element name="inframeset" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="catchall" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="DomainLimits">
+		<xsd:all>
+			<xsd:element name="bandwidth" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="quota" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="emails" type="xsd:int" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="CustomerInfo">
+		<xsd:all>
+			<xsd:element name="FirstName" type="xsd:string"/>
+			<xsd:element name="LastName" type="xsd:string"/>
+			<xsd:element name="Company" type="xsd:string"/>
+			<xsd:element name="Address1" type="xsd:string"/>
+			<xsd:element name="Address2" type="xsd:string"/>
+			<xsd:element name="City" type="xsd:string"/>
+			<xsd:element name="Province" type="xsd:string"/>
+			<xsd:element name="PostalCode" type="xsd:string"/>
+			<xsd:element name="Country" type="xsd:string"/>
+			<xsd:element name="Email" type="xsd:string"/>
+			<xsd:element name="Phone" type="xsd:string"/>
+<!-- add 20090406 -->
+			<xsd:element name="AltPhone" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Fax" type="xsd:string"/>
+			<xsd:element name="Currency" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="MailInfo">
+		<xsd:all>
+			<xsd:element name="account" type="xsd:string"/>
+			<xsd:element name="password" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="alias" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="flag" type="xsd:boolean" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+<!-- add 20090210 for mail rotation -->
+		<xsd:complexType name="RotationInfo">
+		<xsd:all>
+			<xsd:element name="account" type="xsd:string"/>
+			<xsd:element name="days" type="xsd:int"/>
+			<xsd:element name="folder" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="FTPInfo">
+		<xsd:all>
+			<xsd:element name="username" type="xsd:string"/>
+			<xsd:element name="password" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="subdirectory" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="IntRange">
+		<xsd:all>
+			<xsd:element name="Start" type="xsd:int"/>
+			<xsd:element name="End" type="xsd:int" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="AdminInfo">
+		<xsd:all>
+			<xsd:element name="SalesRep" type="xsd:string"/>
+			<xsd:element name="ExternalID" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="ServiceInfo">
+		<xsd:all>
+			<xsd:element name="ServiceName" type="xsd:string"/>
+			<xsd:element name="Status" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ServiceID" type="xsd:string" minOccurs="0"/>
+<!-- add 20090716 -->
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="UsageInfo">
+		<xsd:all>
+			<xsd:element name="Month" type="xsd:string"/>
+			<xsd:element name="Bandwidth" type="xsd:string"/>
+			<xsd:element name="Diskusage" type="xsd:string"/>
+			<xsd:element name="MailboxesUsed" type="xsd:string"/>
+			<xsd:element name="Mailboxes" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="DNSAInfo">
+		<xsd:all>
+			<xsd:element name="Name" type="xsd:string"/>
+			<xsd:element name="Address" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="DNSCInfo">
+		<xsd:all>
+			<xsd:element name="Alias" type="xsd:string"/>
+			<xsd:element name="Name" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="DNSMInfo">
+		<xsd:all>
+			<xsd:element name="Priority" type="xsd:string"/>
+			<xsd:element name="Address" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+<!-- add 20090224 for SPF-->
+		<xsd:complexType name="DNSTInfo">
+		<xsd:all>
+			<xsd:element name="Name" type="xsd:string"/>
+			<xsd:element name="Value" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="Responder">
+		<xsd:all>
+			<xsd:element name="Name" type="xsd:string"/>
+			<xsd:element name="State" type="xsd:string"/>
+			<xsd:element name="Condition" type="xsd:string"/>
+			<xsd:element name="ConditionText" type="xsd:string"/>
+			<xsd:element name="Content" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="CCInfo">
+		<xsd:all>
+			<xsd:element name="CardHolder" type="xsd:string"/>
+			<xsd:element name="CardNumber" type="xsd:string"/>
+			<xsd:element name="CardExpiry" type="xsd:string"/>
+<!-- add 20090706-->
+			<xsd:element name="AVSAddress" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="AVSPostalCode" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="Filter">
+		<xsd:all>
+			<xsd:element name="Rule" type="xsd:string"/>
+			<xsd:element name="OrderID" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="Status" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DateFrom" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DateTo" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="RuleName" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="MySQLInfo">
+			<xsd:all>
+				<xsd:element name="version" type="xsd:int"/>
+				<xsd:element name="password" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="dbname" type="xsd:string" minOccurs="0"/>
+			</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="MySQLUserInfo">
+		<xsd:all>
+			<xsd:element name="username" type="xsd:string"/>
+		</xsd:all>
+		</xsd:complexType>
+
+		<!-- Arrays -->
+		<xsd:complexType name="ArrayOfCCNumbers">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="xsd:string[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ArrayOfServiceInfo">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:ServiceInfo[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ArrayOfUsageInfo">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:UsageInfo[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ArrayOfDNSAInfo">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:DNSAInfo[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ArrayOfDNSCInfo">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:DNSCInfo[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ArrayOfDNSMInfo">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:DNSMInfo[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+<!-- add 20090224 for SPF-->
+		<xsd:complexType name="ArrayOfDNSTInfo">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:DNSTInfo[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ArrayOfResponders">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:Responder[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ArrayOfAllow">
+				<xsd:complexContent>
+					<xsd:restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType"
+							wsdl:arrayType="xsd:string[]"/>
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		<xsd:complexType name="ArrayOfBlock">
+				<xsd:complexContent>
+					<xsd:restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType"
+							wsdl:arrayType="xsd:string[]"/>
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		<xsd:complexType name="ArrayOfLanguages">
+				<xsd:complexContent>
+					<xsd:restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType"
+							wsdl:arrayType="xsd:string[]"/>
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		<xsd:complexType name="ArrayOfStrings">
+				<xsd:complexContent>
+					<xsd:restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType"
+							wsdl:arrayType="xsd:string[]"/>
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		<xsd:complexType name="ArrayOfFilters">
+				<xsd:complexContent>
+					<xsd:restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType"
+							wsdl:arrayType="typens:Filter[]"/>
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		<!-- Spam/AutoRes -->
+		<xsd:complexType name='AutoResponders'>
+		<xsd:all>
+			<xsd:element name='active' type='typens:ArrayOfResponders'/>
+			<xsd:element name='inactive' type='typens:ArrayOfResponders'/>
+		</xsd:all>
+		</xsd:complexType>
+		<xsd:complexType name="SpamFilter">
+		<xsd:all>
+			<xsd:element name="State" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SensitivityLevel" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DeliveryMode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="AllowList" type="typens:ArrayOfAllow" minOccurs="0"/>
+			<xsd:element name="BlockList" type="typens:ArrayOfBlock" minOccurs="0"/>
+			<xsd:element name="BlockedLanguages" type="typens:ArrayOfLanguages" minOccurs="0"/>
+		</xsd:all>
+		</xsd:complexType>
+
+<!-- add 20081202 for f2e -->
+	<xsd:complexType name="FaxInfo">
+		<xsd:all>
+			<xsd:element name="Domain" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Email" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="FaxNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ServiceID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ServiceCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="StartDate" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Status" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="ArrayOfFaxInfo">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:FaxInfo[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="FaxUsage">
+		<xsd:all>
+			<xsd:element name="month" type="xsd:string"/>		
+			<xsd:element name="year" type="xsd:string"/>		
+			<xsd:element name="PageLimit" type="xsd:int"/>
+			<xsd:element name="PagesSent" type="xsd:int"/>
+			<xsd:element name="PagesReceived" type="xsd:int"/>
+		</xsd:all>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ArrayOfFaxUsage">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:FaxUsage[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="NewFaxReservation">
+		<xsd:all>
+			<xsd:element name="Email" type="xsd:string"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="FaxReservationInfo">
+		<xsd:all>
+			<xsd:element name="ReservationId" type="xsd:string"/>
+			<xsd:element name="FaxNumbers" type="typens:ArrayOfStrings"/>
+		</xsd:all>
+	</xsd:complexType>
+
+<!-- add 20090209 for f2e SubAccount-->
+	<xsd:complexType name="FaxSubAccount">
+		<xsd:all>
+			<xsd:element name="ServiceID" type="xsd:string"/>
+			<xsd:element name="Email" type="xsd:string"/>
+			<xsd:element name="Password" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReceiveFaxes" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="SendFaxes" type="xsd:boolean" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfFaxSubAccount">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType"
+				wsdl:arrayType="typens:FaxSubAccount[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	</xsd:schema>
+	</types>
+
+	<!-- TYPES END -->
+
+	<message name="helloRequest">
+	<part name="name" type="xsd:string"/>
+	</message>
+	<message name="helloResponse">
+	<part name="return" type="xsd:string"/>
+	</message>
+
+
+	<!-- MESSAGES BEGIN -->
+
+
+	<!-- Web Commands -->
+	<message name="newDomainRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="domaininfo" type="typens:DomainInfo"/>
+	</message>
+	<message name="newDomainResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="delDomainRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="delDomainResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setPasswordRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="password" type="xsd:string"/>
+	</message>
+	<message name="setPasswordResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+	<!-- Admin Commands -->
+	<message name="setPackageRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="domaininfo" type="typens:DomainInfo"/>
+	</message>
+	<message name="setPackageResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setForwardRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="forward" type="typens:NewForward"/>
+	</message>
+	<message name="setForwardResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setEmailsRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="emails" type="xsd:int"/>
+	</message>
+	<message name="setEmailsResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setStorageRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="quota" type="xsd:int"/>
+	</message>
+	<message name="setStorageResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setDomainLimitsRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="limits" type="typens:DomainLimits"/>
+	</message>
+	<message name="setDomainLimitsResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setBandwidthRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="bandwidth" type="xsd:int"/>
+	</message>
+	<message name="setBandwidthResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="suspendWebRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="singular" type="xsd:boolean"/>
+	</message>
+	<message name="suspendWebResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="unsuspendWebRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="singular" type="xsd:boolean"/>
+	</message>
+	<message name="unsuspendWebResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableWebRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="singular" type="xsd:boolean"/>
+	</message>
+	<message name="disableWebResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableWebRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="singular" type="xsd:boolean"/>
+	</message>
+	<message name="enableWebResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="seterrorWebRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="error" type="xsd:int"/>
+	</message>
+	<message name="seterrorWebResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="restoreWebRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="error" type="xsd:int"/>
+	</message>
+	<message name="restoreWebResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setVCPPRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="custom" type="xsd:boolean"/>
+	</message>
+	<message name="setVCPPResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+	<!-- Service Commands -->
+	<message name="addServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="service" type="typens:NewService"/>
+	</message>
+	<message name="addServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="dropServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="service" type="typens:ServiceInfo"/>
+	</message>
+	<message name="dropServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="changeServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="service" type="typens:NewService"/>
+	</message>
+	<message name="changeServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="service" type="typens:ServiceInfo"/>
+	</message>
+	<message name="enableServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="service" type="typens:ServiceInfo"/>
+	</message>
+	<message name="disableServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<!-- 20090706 add SERVICES base on ACCOUNT -->
+	<message name="addAccountServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="service" type="typens:NewService"/>
+	</message>
+	<message name="addAccountServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="dropAccountServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="service" type="typens:ServiceInfo"/>
+	</message>
+	<message name="dropAccountServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="changeAccountServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="service" type="typens:NewService"/>
+	</message>
+	<message name="changeAccountServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableAccountServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="service" type="typens:ServiceInfo"/>
+	</message>
+	<message name="enableAccountServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableAccountServiceRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="service" type="typens:ServiceInfo"/>
+	</message>
+	<message name="disableAccountServiceResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+
+	<!-- Info Commands -->
+	<message name='setTemplateInfoRequest'>
+	  <part name='primary' type='typens:PrimaryInfo'/>
+	  <part name='domain' type='xsd:string'/>
+	  <part name='values' type='typens:ArrayOfStrings'/>
+	</message>
+	<message name='setTemplateInfoResponse'>
+	  <part name='return' type='typens:ReturnCode'/>
+	</message>
+	<message name="getCustomerInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getCustomerInfoResponse">
+	<part name="info" type="typens:CustomerInfo"/>
+	</message>
+
+	<message name="setCustomerInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="info" type="typens:CustomerInfo"/>
+	</message>
+	<message name="setCustomerInfoResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="getAssimilateeInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getAssimilateeInfoResponse">
+	<part name="info" type="typens:CustomerInfo"/>
+	</message>
+
+	<message name="setAssimilateeInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="info" type="typens:CustomerInfo"/>
+	</message>
+	<message name="setAssimilateeInfoResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="setEmailRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="email" type="xsd:string"/>
+	</message>
+	<message name="setEmailResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="getAdminInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getAdminInfoResponse">
+	<part name="info" type="typens:AdminInfo"/>
+	</message>
+
+	<message name="setAdminInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="info" type="typens:AdminInfo"/>
+	</message>
+	<message name="setAdminInfoResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="getUsageRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="month" type="typens:IntRange"/>
+	</message>
+	<message name="getUsageResponse">
+	<part name="usage" type="typens:ArrayOfUsageInfo"/>
+	</message>
+
+	<message name="getServiceInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getServiceInfoResponse">
+	<part name="services" type="typens:ArrayOfServiceInfo"/>
+	</message>
+
+	<!-- 20090706 add SERVICES base on ACCOUNT -->
+	<message name="getAccountServiceInfoRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="accountinfo" type="typens:AccountInfo"/>
+		<part name="singular" type="xsd:boolean"/>
+	</message>
+	<message name="getAccountServiceInfoResponse">
+		<part name="services" type="typens:ArrayOfServiceInfo"/>
+	</message>
+
+	<message name="getMasterRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getMasterResponse">
+	<part name="master" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="getAliasesToRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="account" type="xsd:string"/>
+	</message>
+	<message name="getAliasesToResponse">
+	<part name="aliases" type="typens:ArrayOfStrings"/>
+	</message>
+
+	<message name="sendPasswordEmailRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="sendPasswordEmailResponse">
+		<part name="master" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="getCCInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getCCInfoResponse">
+	<part name="info" type="typens:CCInfo"/>
+	</message>
+
+	<message name="setCCInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="info" type="typens:CCInfo"/>
+	</message>
+	<message name="setCCInfoResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="getCCCustomersRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="number" type="xsd:string"/>
+	</message>
+	<message name="getCCCustomersResponse">
+	<part name="numbers" type="typens:ArrayOfCCNumbers"/>
+	</message>
+
+	<message name="getCCInfoByCustomerRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="customer" type="xsd:int"/>
+	</message>
+	<message name="getCCInfoByCustomerResponse">
+	<part name="info" type="typens:CCInfo"/>
+	</message>
+
+	<message name="setCCInfoByCustomerRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="customer" type="xsd:int"/>
+	<part name="info" type="typens:CCInfo"/>
+	</message>
+	<message name="setCCInfoByCustomerResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="getVMSCCInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getVMSCCInfoResponse">
+	<part name="info" type="typens:CCInfo"/>
+	</message>
+
+	<message name="setVMSCCInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="info" type="typens:CCInfo"/>
+	</message>
+	<message name="setVMSCCInfoResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+	<!-- FTP Commands -->
+	<message name="ftpEnableRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="ftpEnableResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="ftpDisableRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="ftpDisableResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="ftpIsEnabledRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="ftpIsEnabledResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="ftpAddUserRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="ftpinfo" type="typens:FTPInfo"/>
+	</message>
+	<message name="ftpAddUserResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="ftpDisableUserRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="username" type="xsd:string"/>
+	</message>
+	<message name="ftpDisableUserResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="ftpChangePasswordRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="ftpinfo" type="typens:FTPInfo"/>
+	</message>
+	<message name="ftpChangePasswordResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="ftpChangeHomedirRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="ftpinfo" type="typens:FTPInfo"/>
+	</message>
+	<message name="ftpChangeHomedirResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="ftpAccountStatusRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="username" type="xsd:string"/>
+	</message>
+	<message name="ftpAccountStatusResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+	<!-- Mail Commands -->
+
+	<message name="mailAddRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailAddResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailDelRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="account" type="xsd:string"/>
+	</message>
+	<message name="mailDelResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailFwdRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailFwdResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailPwdRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailPwdResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailAliasRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailAliasResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailDelAliasRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="alias" type="xsd:string"/>
+	</message>
+	<message name="mailDelAliasResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailNewDomRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailNewDomResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailRemDomRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="mailRemDomResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailChgMMRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailChgMMResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailCatchAllRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="account" type="xsd:string"/>
+	</message>
+	<message name="mailCatchAllResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailHasVScanRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="mailHasVScanResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailDelVScanRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="mailDelVScanResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="verifyMailPwdRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="verifyMailPwdResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailGetForwardInfoRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailGetForwardInfoResponse">
+		<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+   
+	<message name="mailGetAllARRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailGetAllARResponse">
+	<part name="responders" type="typens:AutoResponders"/>
+	</message>
+
+	<message name="mailGetSingleARRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+	<part name="name" type="xsd:string"/>
+	</message>
+	<message name="mailGetSingleARResponse">
+		<part name="responder" type="typens:Responder"/>
+	</message>
+
+	<message name="mailAddARRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	<part name="name" type="xsd:string"/>
+	<part name="condition" type="xsd:string"/>
+	<part name="conditionText" type="xsd:string"/>
+	<part name="content" type="xsd:string"/>
+	</message>
+	<message name="mailAddARResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailEditARRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="name" type="xsd:string"/>
+		<part name="condition" type="xsd:string"/>
+		<part name="conditionText" type="xsd:string"/>
+		<part name="content" type="xsd:string"/>
+	</message>
+	<message name="mailEditARResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailDelARRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="name" type="xsd:string"/>
+	</message>
+	<message name="mailDelARResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailSwitchARRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+	<part name="name" type="xsd:string"/>
+		<part name="state" type="xsd:string"/>
+	</message>
+	<message name="mailSwitchARResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailGetSFRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailGetSFResponse">
+		<part name="spamFilter" type="typens:SpamFilter"/>
+	</message>
+
+	<message name="mailSetSFStateRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+	<part name="state" type="xsd:string"/>
+	</message>
+	<message name="mailSetSFStateResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+	
+	<message name="mailSetSFDeliveryRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="deliveryMode" type="xsd:string"/>
+	</message>
+	<message name="mailSetSFDeliveryResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailSetSFLevelRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="filteringLevel" type="xsd:string"/>
+	</message>
+	<message name="mailSetSFLevelResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailSetSFBlockLangRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="blockedLanguages" type="typens:ArrayOfLanguages"/>
+	</message>
+	<message name="mailSetSFBlockLangResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailSetSFBlockListRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="blockList" type="typens:ArrayOfBlock"/>
+	</message>
+	<message name="mailSetSFBlockListResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailSetSFAllowListRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="allowList" type="typens:ArrayOfBlock"/>
+	</message>
+	<message name="mailSetSFAllowListResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailSetFeaturesRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	<part name="featureSet" type="xsd:string"/>
+	</message>
+	<message name="mailSetFeaturesResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailSetFiltersRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="filters" type="typens:ArrayOfFilters"/>
+	</message>
+	<message name="mailSetFiltersResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="mailGetFiltersRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+	<part name="mailinfo" type="typens:MailInfo"/>
+	</message>
+	<message name="mailGetFiltersResponse">
+		<part name="filters" type="typens:ArrayOfFilters"/>
+	</message>
+	<message name="mailEnableRimNotifyRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="callbackURL" type="xsd:string"/>
+		<part name="callbackPage" type="xsd:string"/>
+		<part name="notificationId" type="xsd:string"/>
+	</message>
+	<message name="mailEnableRimNotifyResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+ 
+	<message name="mailDisableRimNotifyRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mailinfo" type="typens:MailInfo"/>
+		<part name="subscriptionId" type="xsd:string"/>
+	</message>
+	<message name="mailDisableRimNotifyResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+<!-- add 20090210 for mail rotation -->
+	<message name="mailFolderRotationRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="rotationinfo" type="typens:RotationInfo"/>
+	</message>
+	<message name="mailFolderRotationResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+
+	<!-- DNS Commands -->
+	<message name="dnsRestoreRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="dnsRestoreResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+	<message name="dnsGetARequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="dnsGetAResponse">
+	<part name="ainfo" type="typens:ArrayOfDNSAInfo"/>
+	</message>
+
+<!-- add 20090224 for SPF-->
+	<message name="dnsGetTRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="dnsGetTResponse">
+	<part name="spfinfo" type="typens:ArrayOfDNSTInfo"/>
+	</message>
+	<message name="dnsSetTRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="spfinfo" type="typens:ArrayOfDNSTInfo"/>
+	</message>
+	<message name="dnsSetTResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="dnsGetCRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="dnsGetCResponse">
+	<part name="cinfo" type="typens:ArrayOfDNSCInfo"/>
+	</message>
+
+	<message name="dnsGetMRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="dnsGetMResponse">
+	<part name="minfo" type="typens:ArrayOfDNSMInfo"/>
+	</message>
+
+	<message name="dnsSetARequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="ainfo" type="typens:ArrayOfDNSAInfo"/>
+	</message>
+	<message name="dnsSetAResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="dnsSetCRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="cinfo" type="typens:ArrayOfDNSCInfo"/>
+	</message>
+	<message name="dnsSetCResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="dnsSetMRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="minfo" type="typens:ArrayOfDNSMInfo"/>
+	</message>
+	<message name="dnsSetMResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+	<!-- XP Commands -->
+	<message name="enableASPRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableASPResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableASPRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableASPResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableASPNRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableASPNResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableASPNRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableASPNResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableCFMRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableCFMResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableCFMRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableCFMResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableCFMXRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableCFMXResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableCFMXRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableCFMXResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableMySQLRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mysqlinfo" type="typens:MySQLInfo"/>
+	</message>
+	<message name="enableMySQLResponse">
+		<part name="return" type="typens:MySQLUserInfo"/>
+	</message>
+	<message name="disableMySQLRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+		<part name="mysqlinfo" type="typens:MySQLInfo"/>
+	</message>
+	<message name="disableMySQLResponse">
+		<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+
+	<message name="enableASPSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableASPSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableASPSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableASPSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableASPNSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableASPNSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableASPNSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableASPNSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableCFMSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableCFMSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableCFMSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableCFMSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="enableCFMXSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="enableCFMXSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+	<message name="disableCFMXSSLRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="disableCFMXSSLResponse">
+	<part name="return" type="typens:ReturnCode"/>
+	</message>
+
+<!-- add 20081202 for f2e -->
+  <message name="getFaxInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="faxinfo" type="typens:FaxInfo"/>
+	</message>
+  <message name="getFaxInfoResponse">
+	<part name="faxinfoarray" type="typens:ArrayOfFaxInfo"/>
+  </message>
+  <message name="getFaxUsageRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="faxnumber" type="xsd:string"/>
+	<part name="month" type="typens:IntRange"/>
+  </message>
+  <message name="getFaxUsageResponse">
+	<part name="usage" type="typens:ArrayOfFaxUsage"/>
+  </message>
+  <message name="reserveFaxNumberRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="reservation" type="typens:NewFaxReservation"/>
+  </message>
+  <message name="reserveFaxNumberResponse">
+	<part name="reservationinfo" type="typens:FaxReservationInfo"/>
+  </message>
+
+<!-- add 20090209 for f2e SubAccount-->
+  <message name="addFaxSubAccountRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="faxsubaccount" type="typens:FaxSubAccount"/>
+  </message>
+  <message name="addFaxSubAccountResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="changeFaxSubAccountRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="faxsubaccount" type="typens:FaxSubAccount"/>
+  </message>
+  <message name="changeFaxSubAccountResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="deleteFaxSubAccountRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="faxsubaccount" type="typens:FaxSubAccount"/>
+  </message>
+  <message name="deleteFaxSubAccountResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="getFaxSubAccountRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="serviceid" type="xsd:string"/>
+  </message>
+  <message name="getFaxSubAccountResponse">
+	<part name="subaccountinfo" type="typens:ArrayOfFaxSubAccount"/>
+  </message>
+
+<!-- add 20090406 for multiAccount-->
+<!-- add 20100212 username-->
+  <message name="newAccountRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="email" type="xsd:string"/>
+	<part name="password" type="xsd:string"/>
+	<part name="username" type="xsd:string"/>
+  </message>
+  <message name="newAccountResponse">
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="setDomainAccountRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="setDomainAccountResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="delAccountRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="delAccountResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="getAccountDomainsRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="getAccountDomainsResponse">
+	<part name="domains" type="typens:ArrayOfStrings"/>
+  </message>
+  <message name="setAccountPasswordRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="password" type="xsd:string"/>
+  </message>
+  <message name="setAccountPasswordResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="setAccountStatusRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="status" type="xsd:string"/>
+<!-- 20091125 if flag=1, only change account table flag -->
+	<part name="flag" type="xsd:boolean"/>
+  </message>
+  <message name="setAccountStatusResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="checkFtpUserRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="ftpuser" type="xsd:string"/>
+  </message>
+  <message name="checkFtpUserResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="getFtpUserRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+  </message>
+  <message name="getFtpUserResponse">
+	<part name="ftpuser" type="xsd:string"/>
+  </message>
+  <message name="getAccountInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="getAccountInfoResponse">
+	<part name="info" type="typens:AccountInfo"/>
+  </message>
+  <message name="exportDomainRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+  </message>
+  <message name="exportDomainResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="getAccountPayMethodRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="getAccountPayMethodResponse">
+	<part name="paymethod" type="xsd:string"/>
+  </message>
+  <message name="setAccountPayMethodRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="paymethod" type="xsd:string"/>
+  </message>
+  <message name="setAccountPayMethodResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="setAccountCustomerInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="info" type="typens:CustomerInfo"/>
+  </message>
+  <message name="setAccountCustomerInfoResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="getAccountCustomerInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="getAccountCustomerInfoResponse">
+	<part name="info" type="typens:CustomerInfo"/>
+  </message>
+  <message name="setAccountEmailRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="email" type="xsd:string"/>
+  </message>
+  <message name="setAccountEmailResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="setAccountCCInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="info" type="typens:CCInfo"/>
+  </message>
+  <message name="setAccountCCInfoResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="mailRenameRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="account" type="xsd:string"/>
+	<part name="newaccount" type="xsd:string"/>
+  </message>
+  <message name="mailRenameResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="getAccountCCInfoRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	</message>
+	<message name="getAccountCCInfoResponse">
+	<part name="info" type="typens:CCInfo"/>
+	</message>
+  <message name="getAccountPassphraseRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="getAccountPassphraseResponse">
+	<part name="passphrase" type="xsd:string"/>
+  </message>
+  <message name="setAccountPassphraseRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="passphrase" type="xsd:string"/>
+  </message>
+  <message name="setAccountPassphraseResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="setAccountSettingRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="accountsetting" type="typens:AccountSetting"/>
+  </message>
+  <message name="setAccountSettingResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="getAccountSettingRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+  </message>
+  <message name="getAccountSettingResponse">
+	<part name="accountsetting" type="typens:AccountSetting"/>
+  </message>
+<!-- add 20090716 add email-->
+  <message name="sendAccountPwdEmailRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="accountinfo" type="typens:AccountInfo"/>
+	<part name="email" type="xsd:string"/>
+  </message>
+  <message name="sendAccountPwdEmailResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+<!-- add 20090406 for mailing list-->
+  <message name="mailAddListRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="listinfo" type="typens:MailinglistInfo"/>
+  </message>
+  <message name="mailAddListResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+  <message name="mailDelListRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="listinfo" type="typens:MailinglistInfo"/>
+  </message>
+  <message name="mailDelListResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+<!-- add 20090710 for change domain symlnk-->
+  <message name="setDomainRootRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="subfolder" type="xsd:string"/>
+  </message>
+  <message name="setDomainRootResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+<!-- add 20090806 mail snap project-->
+  <message name="mailSnapRequest">
+	<part name="primary" type="typens:PrimaryInfo"/>
+	<part name="domain" type="xsd:string"/>
+	<part name="cmdtype" type="xsd:string"/>
+	<part name="cmd" type="xsd:string"/>
+	<part name="account" type="xsd:string"/>
+	<part name="value" type="xsd:string"/>
+  </message>
+  <message name="mailSnapResponse">
+	<part name="return" type="typens:ReturnCode"/>
+  </message>
+<!-- add 20091119 for add mail status flag-->
+  <message name="setMailDisableFlagsRequest">
+        <part name="primary" type="typens:PrimaryInfo"/>
+        <part name="command" type="xsd:string"/>
+        <part name="flag" type="xsd:string"/>
+  </message>
+  <message name="setMailDisableFlagsResponse">
+        <part name="return" type="typens:ReturnCode"/>
+  </message>
+<!-- add 20091015 change lang -->
+  <message name="changeLangRequest">
+        <part name="primary" type="typens:PrimaryInfo"/>
+        <part name="domain" type="xsd:string"/>
+        <part name="language" type="xsd:string"/>
+  </message>
+  <message name="changeLangResponse">
+        <part name="return" type="typens:ReturnCode"/>
+  </message>
+
+	<message name="getDomainEmailsRequest">
+		<part name="primary" type="typens:PrimaryInfo"/>
+		<part name="domain" type="xsd:string"/>
+	</message>
+	<message name="getDomainEmailsResponse">
+		<part name="domainemails" type="typens:ArrayOfMailInfo"/>
+	</message>
+
+	<!-- MESSAGES END -->
+
+
+	<!-- PORT TYPES BEGIN -->
+
+	<portType name="RRADPort">
+	<operation name='setTemplateInfo'>
+	  <input message='typens:setTemplateInfoRequest'/>
+	  <output message='typens:setTemplateInfoResponse'/>
+	</operation>
+	<operation name="hello">
+		<input message="typens:helloRequest"/>
+		<output message="typens:helloResponse"/>
+	</operation>
+	<operation name="newDomain">
+		<input message="typens:newDomainRequest"/>
+		<output message="typens:newDomainResponse"/>
+	</operation>
+	<operation name="delDomain">
+		<input message="typens:delDomainRequest"/>
+		<output message="typens:delDomainResponse"/>
+	</operation>
+	<operation name="setPassword">
+		<input message="typens:setPasswordRequest"/>
+		<output message="typens:setPasswordResponse"/>
+	</operation>
+	<operation name="setPackage">
+		<input message="typens:setPackageRequest"/>
+		<output message="typens:setPackageResponse"/>
+	</operation>
+	<operation name="setForward">
+		<input message="typens:setForwardRequest"/>
+		<output message="typens:setForwardResponse"/>
+	</operation>
+	<operation name="setEmails">
+		<input message="typens:setEmailsRequest"/>
+		<output message="typens:setEmailsResponse"/>
+	</operation>
+	<operation name="setStorage">
+		<input message="typens:setStorageRequest"/>
+		<output message="typens:setStorageResponse"/>
+	</operation>
+	<operation name="setDomainLimits">
+		<input message="typens:setDomainLimitsRequest"/>
+		<output message="typens:setDomainLimitsResponse"/>
+	</operation>
+	<operation name="setBandwidth">
+		<input message="typens:setBandwidthRequest"/>
+		<output message="typens:setBandwidthResponse"/>
+	</operation>
+	<operation name="suspendWeb">
+		<input message="typens:suspendWebRequest"/>
+		<output message="typens:suspendWebResponse"/>
+	</operation>
+	<operation name="unsuspendWeb">
+		<input message="typens:unsuspendWebRequest"/>
+		<output message="typens:unsuspendWebResponse"/>
+	</operation>
+	<operation name="disableWeb">
+		<input message="typens:disableWebRequest"/>
+		<output message="typens:disableWebResponse"/>
+	</operation>
+	<operation name="enableWeb">
+		<input message="typens:enableWebRequest"/>
+		<output message="typens:enableWebResponse"/>
+	</operation>
+	<operation name="seterrorWeb">
+		<input message="typens:seterrorWebRequest"/>
+		<output message="typens:seterrorWebResponse"/>
+	</operation>
+	<operation name="restoreWeb">
+		<input message="typens:restoreWebRequest"/>
+		<output message="typens:restoreWebResponse"/>
+	</operation>
+	<operation name="setVCPP">
+		<input message="typens:setVCPPRequest"/>
+		<output message="typens:setVCPPResponse"/>
+	</operation>
+	<operation name="addService">
+		<input message="typens:addServiceRequest"/>
+		<output message="typens:addServiceResponse"/>
+	</operation>
+	<operation name="dropService">
+		<input message="typens:dropServiceRequest"/>
+		<output message="typens:dropServiceResponse"/>
+	</operation>
+	<operation name="changeService">
+		<input message="typens:changeServiceRequest"/>
+		<output message="typens:changeServiceResponse"/>
+	</operation>
+	<operation name="enableService">
+		<input message="typens:enableServiceRequest"/>
+		<output message="typens:enableServiceResponse"/>
+	</operation>
+	<operation name="disableService">
+		<input message="typens:disableServiceRequest"/>
+		<output message="typens:disableServiceResponse"/>
+	</operation>
+	<!-- 20090706 add SERVICES base on ACCOUNT -->
+	<operation name="addAccountService">
+		<input message="typens:addAccountServiceRequest"/>
+		<output message="typens:addAccountServiceResponse"/>
+	</operation>
+	<operation name="dropAccountService">
+		<input message="typens:dropAccountServiceRequest"/>
+		<output message="typens:dropAccountServiceResponse"/>
+	</operation>
+	<operation name="changeAccountService">
+		<input message="typens:changeAccountServiceRequest"/>
+		<output message="typens:changeAccountServiceResponse"/>
+	</operation>
+	<operation name="enableAccountService">
+		<input message="typens:enableAccountServiceRequest"/>
+		<output message="typens:enableAccountServiceResponse"/>
+	</operation>
+	<operation name="disableAccountService">
+		<input message="typens:disableAccountServiceRequest"/>
+		<output message="typens:disableAccountServiceResponse"/>
+	</operation>
+	<operation name="getCustomerInfo">
+		<input message="typens:getCustomerInfoRequest"/>
+		<output message="typens:getCustomerInfoResponse"/>
+	</operation>
+	<operation name="setCustomerInfo">
+		<input message="typens:setCustomerInfoRequest"/>
+		<output message="typens:setCustomerInfoResponse"/>
+	</operation>
+	<operation name="getAssimilateeInfo">
+		<input message="typens:getAssimilateeInfoRequest"/>
+		<output message="typens:getAssimilateeInfoResponse"/>
+	</operation>
+	<operation name="setAssimilateeInfo">
+		<input message="typens:setAssimilateeInfoRequest"/>
+		<output message="typens:setAssimilateeInfoResponse"/>
+	</operation>
+	<operation name="setEmail">
+		<input message="typens:setEmailRequest"/>
+		<output message="typens:setEmailResponse"/>
+	</operation>
+	<operation name="getAdminInfo">
+		<input message="typens:getAdminInfoRequest"/>
+		<output message="typens:getAdminInfoResponse"/>
+	</operation>
+	<operation name="setAdminInfo">
+		<input message="typens:setAdminInfoRequest"/>
+		<output message="typens:setAdminInfoResponse"/>
+	</operation>
+	<operation name="getUsage">
+		<input message="typens:getUsageRequest"/>
+		<output message="typens:getUsageResponse"/>
+	</operation>
+	<operation name="getServiceInfo">
+		<input message="typens:getServiceInfoRequest"/>
+		<output message="typens:getServiceInfoResponse"/>
+	</operation>
+	<!-- 20090706 add SERVICES base on ACCOUNT -->
+	<operation name="getAccountServiceInfo">
+		<input message="typens:getAccountServiceInfoRequest"/>
+		<output message="typens:getAccountServiceInfoResponse"/>
+	</operation>
+	<operation name="getMaster">
+		<input message="typens:getMasterRequest"/>
+		<output message="typens:getMasterResponse"/>
+	</operation>
+	<operation name="getAliasesTo">
+		<input message="typens:getAliasesToRequest"/>
+		<output message="typens:getAliasesToResponse"/>
+	</operation>
+	<operation name="sendPasswordEmail">
+		<input message="typens:sendPasswordEmailRequest"/>
+		<output message="typens:sendPasswordEmailResponse"/>
+	</operation>
+	<operation name="getCCInfo">
+		<input message="typens:getCCInfoRequest"/>
+		<output message="typens:getCCInfoResponse"/>
+	</operation>
+	<operation name="setCCInfo">
+		<input message="typens:setCCInfoRequest"/>
+		<output message="typens:setCCInfoResponse"/>
+	</operation>
+	<operation name="getCCCustomers">
+		<input message="typens:getCCCustomersRequest"/>
+		<output message="typens:getCCCustomersResponse"/>
+	</operation>
+	<operation name="getCCInfoByCustomer">
+		<input message="typens:getCCInfoByCustomerRequest"/>
+		<output message="typens:getCCInfoByCustomerResponse"/>
+	</operation>
+	<operation name="setCCInfoByCustomer">
+		<input message="typens:setCCInfoByCustomerRequest"/>
+		<output message="typens:setCCInfoByCustomerResponse"/>
+	</operation>
+	<operation name="getVMSCCInfo">
+		<input message="typens:getVMSCCInfoRequest"/>
+		<output message="typens:getVMSCCInfoResponse"/>
+	</operation>
+	<operation name="setVMSCCInfo">
+		<input message="typens:setVMSCCInfoRequest"/>
+		<output message="typens:setVMSCCInfoResponse"/>
+	</operation>
+	<operation name="ftpEnable">
+		<input message="typens:ftpEnableRequest"/>
+		<output message="typens:ftpEnableResponse"/>
+	</operation>
+	<operation name="ftpDisable">
+		<input message="typens:ftpDisableRequest"/>
+		<output message="typens:ftpDisableResponse"/>
+	</operation>
+	<operation name="ftpIsEnabled">
+		<input message="typens:ftpIsEnabledRequest"/>
+		<output message="typens:ftpIsEnabledResponse"/>
+	</operation>
+	<operation name="ftpAddUser">
+		<input message="typens:ftpAddUserRequest"/>
+		<output message="typens:ftpAddUserResponse"/>
+	</operation>
+	<operation name="ftpDisableUser">
+		<input message="typens:ftpDisableUserRequest"/>
+		<output message="typens:ftpDisableUserResponse"/>
+	</operation>
+	<operation name="ftpChangePassword">
+		<input message="typens:ftpChangePasswordRequest"/>
+		<output message="typens:ftpChangePasswordResponse"/>
+	</operation>
+	<operation name="ftpChangeHomedir">
+		<input message="typens:ftpChangeHomedirRequest"/>
+		<output message="typens:ftpChangeHomedirResponse"/>
+	</operation>
+	<operation name="ftpAccountStatus">
+		<input message="typens:ftpAccountStatusRequest"/>
+		<output message="typens:ftpAccountStatusResponse"/>
+	</operation>
+	<operation name="mailAdd">
+		<input message="typens:mailAddRequest"/>
+		<output message="typens:mailAddResponse"/>
+	</operation>
+	<operation name="mailDel">
+		<input message="typens:mailDelRequest"/>
+		<output message="typens:mailDelResponse"/>
+	</operation>
+	<operation name="mailFwd">
+		<input message="typens:mailFwdRequest"/>
+		<output message="typens:mailFwdResponse"/>
+	</operation>
+	<operation name="mailPwd">
+		<input message="typens:mailPwdRequest"/>
+		<output message="typens:mailPwdResponse"/>
+	</operation>
+	<operation name="mailAlias">
+		<input message="typens:mailAliasRequest"/>
+		<output message="typens:mailAliasResponse"/>
+	</operation>
+	<operation name="mailDelAlias">
+		<input message="typens:mailDelAliasRequest"/>
+		<output message="typens:mailDelAliasResponse"/>
+	</operation>
+	<operation name="mailNewDom">
+		<input message="typens:mailNewDomRequest"/>
+		<output message="typens:mailNewDomResponse"/>
+	</operation>
+	<operation name="mailRemDom">
+		<input message="typens:mailRemDomRequest"/>
+		<output message="typens:mailRemDomResponse"/>
+	</operation>
+	<operation name="mailChgMM">
+		<input message="typens:mailChgMMRequest"/>
+		<output message="typens:mailChgMMResponse"/>
+	</operation>
+	<operation name="mailCatchAll">
+		<input message="typens:mailCatchAllRequest"/>
+		<output message="typens:mailCatchAllResponse"/>
+	</operation>
+	<operation name="mailHasVScan">
+		<input message="typens:mailHasVScanRequest"/>
+		<output message="typens:mailHasVScanResponse"/>
+	</operation>
+	<operation name="mailDelVScan">
+		<input message="typens:mailDelVScanRequest"/>
+		<output message="typens:mailDelVScanResponse"/>
+	</operation>
+	<operation name="verifyMailPwd">
+		<input message="typens:verifyMailPwdRequest"/>
+		<output message="typens:verifyMailPwdResponse"/>
+	</operation>
+	<operation name="mailGetForwardInfo">
+		<input message="typens:mailGetForwardInfoRequest"/>
+		<output message="typens:mailGetForwardInfoResponse"/>
+	</operation>
+	<operation name="mailGetAllAR">
+		<input message="typens:mailGetAllARRequest"/>
+		<output message="typens:mailGetAllARResponse"/>
+	</operation>
+	<operation name="mailGetSingleAR">
+		<input message="typens:mailGetSingleARRequest"/>
+		<output message="typens:mailGetSingleARResponse"/>
+	</operation>
+	<operation name="mailAddAR">
+		<input message="typens:mailAddARRequest"/>
+		<output message="typens:mailAddARResponse"/>
+	</operation>
+	<operation name="mailEditAR">
+		<input message="typens:mailEditARRequest"/>
+		<output message="typens:mailEditARResponse"/>
+	</operation>
+	<operation name="mailDelAR">
+		<input message="typens:mailDelARRequest"/>
+		<output message="typens:mailDelARResponse"/>
+	</operation>
+	<operation name="mailSwitchAR">
+		<input message="typens:mailSwitchARRequest"/>
+		<output message="typens:mailSwitchARResponse"/>
+	</operation>
+	<operation name="mailGetSF">
+		<input message="typens:mailGetSFRequest"/>
+		<output message="typens:mailGetSFResponse"/>
+	</operation>
+	<operation name="mailSetSFState">
+		<input message="typens:mailSetSFStateRequest"/>
+		<output message="typens:mailSetSFStateResponse"/>
+	</operation>
+	<operation name="mailSetSFDelivery">
+		<input message="typens:mailSetSFDeliveryRequest"/>
+		<output message="typens:mailSetSFDeliveryResponse"/>
+	</operation>
+	<operation name="mailSetSFLevel">
+		<input message="typens:mailSetSFLevelRequest"/>
+		<output message="typens:mailSetSFLevelResponse"/>
+	</operation>
+	<operation name="mailSetSFBlockLang">
+		<input message="typens:mailSetSFBlockLangRequest"/>
+		<output message="typens:mailSetSFBlockLangResponse"/>
+	</operation>
+	<operation name="mailSetSFBlockList">
+		<input message="typens:mailSetSFBlockListRequest"/>
+		<output message="typens:mailSetSFBlockListResponse"/>
+	</operation>
+	<operation name="mailSetSFAllowList">
+		<input message="typens:mailSetSFAllowListRequest"/>
+		<output message="typens:mailSetSFAllowListResponse"/>
+	</operation>
+	<operation name="mailSetFeatures">
+		<input message="typens:mailSetFeaturesRequest"/>
+		<output message="typens:mailSetFeaturesResponse"/>
+	</operation>
+	<operation name="mailSetFilters">
+		<input message="typens:mailSetFiltersRequest"/>
+		<output message="typens:mailSetFiltersResponse"/>
+	</operation>
+	<operation name="mailGetFilters">
+		<input message="typens:mailGetFiltersRequest"/>
+		<output message="typens:mailGetFiltersResponse"/>
+	</operation>
+	<operation name="mailEnableRimNotify">
+		<input message="typens:mailEnableRimNotifyRequest"/>
+		<output message="typens:mailEnableRimNotifyResponse"/>
+	</operation>
+	<operation name="mailDisableRimNotify">
+		<input message="typens:mailDisableRimNotifyRequest"/>
+		<output message="typens:mailDisableRimNotifyResponse"/>
+	</operation>
+<!-- add 20090210 for mail rotation -->
+	<operation name="mailFolderRotation">
+		<input message="typens:mailFolderRotationRequest"/>
+		<output message="typens:mailFolderRotationResponse"/>
+	</operation>
+
+	<operation name="dnsRestore">
+		<input message="typens:dnsRestoreRequest"/>
+		<output message="typens:dnsRestoreResponse"/>
+	</operation>
+	<operation name="dnsGetA">
+		<input message="typens:dnsGetARequest"/>
+		<output message="typens:dnsGetAResponse"/>
+	</operation>
+<!-- add 20090224 for SPF-->
+	<operation name="dnsGetT">
+		<input message="typens:dnsGetTRequest"/>
+		<output message="typens:dnsGetTResponse"/>
+	</operation>
+	<operation name="dnsSetT">
+		<input message="typens:dnsSetTRequest"/>
+		<output message="typens:dnsSetTResponse"/>
+	</operation>
+
+	<operation name="dnsGetC">
+		<input message="typens:dnsGetCRequest"/>
+		<output message="typens:dnsGetCResponse"/>
+	</operation>
+	<operation name="dnsGetM">
+		<input message="typens:dnsGetMRequest"/>
+		<output message="typens:dnsGetMResponse"/>
+	</operation>
+	<operation name="dnsSetA">
+		<input message="typens:dnsSetARequest"/>
+		<output message="typens:dnsSetAResponse"/>
+	</operation>
+	<operation name="dnsSetC">
+		<input message="typens:dnsSetCRequest"/>
+		<output message="typens:dnsSetCResponse"/>
+	</operation>
+	<operation name="dnsSetM">
+		<input message="typens:dnsSetMRequest"/>
+		<output message="typens:dnsSetMResponse"/>
+	</operation>
+	<operation name="enableASP">
+		<input message="typens:enableASPRequest"/>
+		<output message="typens:enableASPResponse"/>
+	</operation>
+	<operation name="disableASP">
+		<input message="typens:disableASPRequest"/>
+		<output message="typens:disableASPResponse"/>
+	</operation>
+	<operation name="enableASPN">
+		<input message="typens:enableASPNRequest"/>
+		<output message="typens:enableASPNResponse"/>
+	</operation>
+	<operation name="disableASPN">
+		<input message="typens:disableASPNRequest"/>
+		<output message="typens:disableASPNResponse"/>
+	</operation>
+	<operation name="enableCFM">
+		<input message="typens:enableCFMRequest"/>
+		<output message="typens:enableCFMResponse"/>
+	</operation>
+	<operation name="disableCFM">
+		<input message="typens:disableCFMRequest"/>
+		<output message="typens:disableCFMResponse"/>
+	</operation>
+	<operation name="enableCFMX">
+		<input message="typens:enableCFMXRequest"/>
+		<output message="typens:enableCFMXResponse"/>
+	</operation>
+	<operation name="disableCFMX">
+		<input message="typens:disableCFMXRequest"/>
+		<output message="typens:disableCFMXResponse"/>
+	</operation>
+	<operation name="enableASPSSL">
+		<input message="typens:enableASPSSLRequest"/>
+		<output message="typens:enableASPSSLResponse"/>
+	</operation>
+	<operation name="disableASPSSL">
+		<input message="typens:disableASPSSLRequest"/>
+		<output message="typens:disableASPSSLResponse"/>
+	</operation>
+	<operation name="enableASPNSSL">
+		<input message="typens:enableASPNSSLRequest"/>
+		<output message="typens:enableASPNSSLResponse"/>
+	</operation>
+	<operation name="disableASPNSSL">
+		<input message="typens:disableASPNSSLRequest"/>
+		<output message="typens:disableASPNSSLResponse"/>
+	</operation>
+	<operation name="enableCFMSSL">
+		<input message="typens:enableCFMSSLRequest"/>
+		<output message="typens:enableCFMSSLResponse"/>
+	</operation>
+	<operation name="disableCFMSSL">
+		<input message="typens:disableCFMSSLRequest"/>
+		<output message="typens:disableCFMSSLResponse"/>
+	</operation>
+	<operation name="enableCFMXSSL">
+		<input message="typens:enableCFMXSSLRequest"/>
+		<output message="typens:enableCFMXSSLResponse"/>
+	</operation>
+	<operation name="disableCFMXSSL">
+		<input message="typens:disableCFMXSSLRequest"/>
+		<output message="typens:disableCFMXSSLResponse"/>
+	</operation>
+	<operation name="enableMySQL">
+		<input message="typens:enableMySQLRequest"/>
+		<output message="typens:enableMySQLResponse"/>
+	</operation>
+	<operation name="disableMySQL">
+		<input message="typens:disableMySQLRequest"/>
+		<output message="typens:disableMySQLResponse"/>
+	</operation>
+
+<!-- add 20081202 for f2e -->
+	<operation name="getFaxInfo">
+		<input message="typens:getFaxInfoRequest"/>
+		<output message="typens:getFaxInfoResponse"/>
+	</operation>
+	<operation name="getFaxUsage">
+		<input message="typens:getFaxUsageRequest"/>
+		<output message="typens:getFaxUsageResponse"/>
+	</operation>
+	<operation name="reserveFaxNumber">
+		<input message="typens:reserveFaxNumberRequest"/>
+		<output message="typens:reserveFaxNumberResponse"/>
+	</operation>
+<!-- add 20090209 for f2e SubAccount-->
+	<operation name="addFaxSubAccount">
+		<input message="typens:addFaxSubAccountRequest"/>
+		<output message="typens:addFaxSubAccountResponse"/>
+	</operation>
+	<operation name="changeFaxSubAccount">
+		<input message="typens:changeFaxSubAccountRequest"/>
+		<output message="typens:changeFaxSubAccountResponse"/>
+	</operation>
+	<operation name="deleteFaxSubAccount">
+		<input message="typens:deleteFaxSubAccountRequest"/>
+		<output message="typens:deleteFaxSubAccountResponse"/>
+	</operation>
+	<operation name="getFaxSubAccount">
+		<input message="typens:getFaxSubAccountRequest"/>
+		<output message="typens:getFaxSubAccountResponse"/>
+	</operation>
+
+<!-- add 20090406 for multiAccount-->
+	<operation name="newAccount">
+		<input message="typens:newAccountRequest"/>
+		<output message="typens:newAccountResponse"/>
+	</operation>
+	<operation name="setDomainAccount">
+		<input message="typens:setDomainAccountRequest"/>
+		<output message="typens:setDomainAccountResponse"/>
+	</operation>
+	<operation name="delAccount">
+		<input message="typens:delAccountRequest"/>
+		<output message="typens:delAccountResponse"/>
+	</operation>
+	<operation name="getAccountDomains">
+		<input message="typens:getAccountDomainsRequest"/>
+		<output message="typens:getAccountDomainsResponse"/>
+	</operation>
+	<operation name="setAccountPassword">
+		<input message="typens:setAccountPasswordRequest"/>
+		<output message="typens:setAccountPasswordResponse"/>
+	</operation>
+	<operation name="setAccountStatus">
+		<input message="typens:setAccountStatusRequest"/>
+		<output message="typens:setAccountStatusResponse"/>
+	</operation>
+	<operation name="checkFtpUser">
+		<input message="typens:checkFtpUserRequest"/>
+		<output message="typens:checkFtpUserResponse"/>
+	</operation>
+	<operation name="getFtpUser">
+		<input message="typens:getFtpUserRequest"/>
+		<output message="typens:getFtpUserResponse"/>
+	</operation>
+	<operation name="getAccountInfo">
+		<input message="typens:getAccountInfoRequest"/>
+		<output message="typens:getAccountInfoResponse"/>
+	</operation>
+	<operation name="exportDomain">
+		<input message="typens:exportDomainRequest"/>
+		<output message="typens:exportDomainResponse"/>
+	</operation>
+	<operation name="getAccountPayMethod">
+		<input message="typens:getAccountPayMethodRequest"/>
+		<output message="typens:getAccountPayMethodResponse"/>
+	</operation>
+	<operation name="setAccountPayMethod">
+		<input message="typens:setAccountPayMethodRequest"/>
+		<output message="typens:setAccountPayMethodResponse"/>
+	</operation>
+	<operation name="setAccountCustomerInfo">
+		<input message="typens:setAccountCustomerInfoRequest"/>
+		<output message="typens:setAccountCustomerInfoResponse"/>
+	</operation>
+	<operation name="getAccountCustomerInfo">
+		<input message="typens:getAccountCustomerInfoRequest"/>
+		<output message="typens:getAccountCustomerInfoResponse"/>
+	</operation>
+	<operation name="setAccountEmail">
+		<input message="typens:setAccountEmailRequest"/>
+		<output message="typens:setAccountEmailResponse"/>
+	</operation>
+	<operation name="setAccountCCInfo">
+		<input message="typens:setAccountCCInfoRequest"/>
+		<output message="typens:setAccountCCInfoResponse"/>
+	</operation>
+	<operation name="mailRename">
+		<input message="typens:mailRenameRequest"/>
+		<output message="typens:mailRenameResponse"/>
+	</operation>
+	<operation name="getAccountCCInfo">
+		<input message="typens:getAccountCCInfoRequest"/>
+		<output message="typens:getAccountCCInfoResponse"/>
+	</operation>
+	<operation name="getAccountPassphrase">
+		<input message="typens:getAccountPassphraseRequest"/>
+		<output message="typens:getAccountPassphraseResponse"/>
+	</operation>
+	<operation name="setAccountPassphrase">
+		<input message="typens:setAccountPassphraseRequest"/>
+		<output message="typens:setAccountPassphraseResponse"/>
+	</operation>
+	<operation name="setAccountSetting">
+		<input message="typens:setAccountSettingRequest"/>
+		<output message="typens:setAccountSettingResponse"/>
+	</operation>
+	<operation name="getAccountSetting">
+		<input message="typens:getAccountSettingRequest"/>
+		<output message="typens:getAccountSettingResponse"/>
+	</operation>
+	<operation name="sendAccountPwdEmail">
+		<input message="typens:sendAccountPwdEmailRequest"/>
+		<output message="typens:sendAccountPwdEmailResponse"/>
+	</operation>
+<!-- add 20090406 for mailing list-->
+	<operation name="mailAddList">
+		<input message="typens:mailAddListRequest"/>
+		<output message="typens:mailAddListResponse"/>
+	</operation>
+	<operation name="mailDelList">
+		<input message="typens:mailDelListRequest"/>
+		<output message="typens:mailDelListResponse"/>
+	</operation>
+<!-- add 20090710 for change domain symlnk-->
+	<operation name="setDomainRoot">
+		<input message="typens:setDomainRootRequest"/>
+		<output message="typens:setDomainRootResponse"/>
+	</operation>
+<!-- add 20090806 mail snap project-->
+	<operation name="mailSnap">
+		<input message="typens:mailSnapRequest"/>
+		<output message="typens:mailSnapResponse"/>
+	</operation>
+<!-- add 20091119 for add mail status flag-->
+	<operation name="setMailDisableFlags">
+		<input message="typens:setMailDisableFlagsRequest"/>
+		<output message="typens:setMailDisableFlagsResponse"/>
+	</operation>
+<!-- add 20091015 change lang -->
+        <operation name="changeLang">
+                <input message="typens:changeLangRequest"/>
+                <output message="typens:changeLangResponse"/>
+        </operation>
+		<operation name="getDomainEmails">
+			<input message="typens:getDomainEmailsRequest"/>
+			<output message="typens:getDomainEmailsResponse"/>
+		</operation>
+
+	</portType>
+
+	<!-- PORT TYPES END -->
+
+
+	<!-- BINDINGS BEGIN -->
+
+	<binding name='RRADBinding' type='typens:RRADPort'>
+	<soap:binding style="rpc"
+		transport="http://schemas.xmlsoap.org/soap/http" />
+	<operation name='setTemplateInfo'>
+	  <soap:operation soapAction='urn:RRADAction'/>
+	  <input>
+		<soap:body encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace='urn:RRAD' use='encoded'/>
+	  </input>
+	  <output>
+		<soap:body encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace='urn:RRAD' use='encoded'/>
+	  </output>
+	</operation>
+	<operation name='hello'>
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name='newDomain'>
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="delDomain">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setPassword">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setPackage">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setForward">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setEmails">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setStorage">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setDomainLimits">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setBandwidth">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="suspendWeb">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="unsuspendWeb">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableWeb">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableWeb">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="seterrorWeb">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="restoreWeb">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setVCPP">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="addService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dropService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="changeService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<!-- 20090706 add SERVICES base on ACCOUNT -->
+	<operation name="addAccountService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dropAccountService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="changeAccountService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableAccountService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableAccountService">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getCustomerInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setCustomerInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getAssimilateeInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setAssimilateeInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setEmail">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getAdminInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setAdminInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getServiceInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<!-- 20090706 add SERVICES base on ACCOUNT -->
+	<operation name="getAccountServiceInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getUsage">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getMaster">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getAliasesTo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="sendPasswordEmail">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getCCInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setCCInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getCCCustomers">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getCCInfoByCustomer">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setCCInfoByCustomer">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getVMSCCInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setVMSCCInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpEnable">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpDisable">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpIsEnabled">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpAddUser">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpDisableUser">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpChangePassword">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpChangeHomedir">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="ftpAccountStatus">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailAdd">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailDel">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailFwd">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailPwd">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailAlias">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailDelAlias">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailNewDom">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailRemDom">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailChgMM">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailCatchAll">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailHasVScan">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailDelVScan">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="verifyMailPwd">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailGetForwardInfo">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailGetAllAR">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailGetSingleAR">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailAddAR">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailEditAR">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailDelAR">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailSwitchAR">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailGetSF">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailSetSFState">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailSetSFDelivery">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailSetSFLevel">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailSetSFBlockLang">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailSetSFBlockList">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+	</operation>
+	<operation name="mailSetSFAllowList">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailSetFeatures">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailSetFilters">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailGetFilters">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body use="encoded" namespace="urn:RRAD"
+			encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailEnableRimNotify">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailDisableRimNotify">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20090210 for mail rotation -->
+	<operation name="mailFolderRotation">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="dnsRestore">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dnsGetA">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20090224 for SPF-->
+	<operation name="dnsGetT">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dnsSetT">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="dnsGetC">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dnsGetM">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dnsSetA">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dnsSetC">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="dnsSetM">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableASP">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableASP">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableASPN">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableASPN">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableCFM">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableCFM">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableCFMX">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableCFMX">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableASPSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableASPSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableASPNSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableASPNSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableCFMSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableCFMSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableCFMXSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableCFMXSSL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="enableMySQL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="disableMySQL">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+<!-- add 20081202 for f2e -->
+	<operation name="getFaxInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getFaxUsage">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="reserveFaxNumber">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20090209 for f2e SubAccount-->
+	<operation name="addFaxSubAccount">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="changeFaxSubAccount">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="deleteFaxSubAccount">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getFaxSubAccount">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+<!-- add 20090406 for multiAccount-->
+	<operation name="newAccount">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setDomainAccount">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="delAccount">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getAccountDomains">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="setAccountPassword">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="setAccountStatus">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="checkFtpUser">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getFtpUser">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getAccountInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="exportDomain">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getAccountPayMethod">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setAccountPayMethod">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setAccountCustomerInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="getAccountCustomerInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setAccountEmail">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="setAccountCCInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="mailRename">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="getAccountCCInfo">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="getAccountPassphrase">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="setAccountPassphrase">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="setAccountSetting">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>	
+	<operation name="getAccountSetting">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="sendAccountPwdEmail">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20090406 for mailing list-->
+	<operation name="mailAddList">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+	<operation name="mailDelList">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20090710 for change domain symlnk-->
+	<operation name="setDomainRoot">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20090806 mail snap project-->
+	<operation name="mailSnap">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20091119 for add mail status flag-->
+	<operation name="setMailDisableFlags">
+		<soap:operation soapAction="urn:RRADAction"/>
+		<input>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+		<soap:body use="encoded" namespace="urn:RRAD"
+		encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+<!-- add 20091015 change lang -->
+        <operation name="changeLang">
+                <soap:operation soapAction="urn:RRADAction"/>
+                <input>
+                <soap:body use="encoded" namespace="urn:RRAD"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                </input>
+                <output>
+                <soap:body use="encoded" namespace="urn:RRAD"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                </output>
+        </operation>
+		<operation name="getDomainEmails">
+			<soap:operation soapAction="urn:RRADAction"/>
+			<input>
+				<soap:body use="encoded" namespace="urn:RRAD" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="urn:RRAD" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+	</binding>
+
+	<!-- BINDINGS END -->
+
+
+	<!-- SERVICES BEGIN -->
+
+	<service name='RRADService'>
+	<port name='RRADPort' binding='typens:RRADBinding'>
+		<soap:address location='https://rradc50.megawebservers.eu/rrad/server.php'/>
+	</port>
+	</service>
+
+	<!-- SERVICES END -->
+
+</definitions>

@@ -21,8 +21,8 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $wsdl = 'http://adminc45stage.carrierzone.com/rrad/server.php?wsdl';
-        $client = new Client($wsdl, ['trace' => true]);
+        $wsdl = dirname(__FILE__).'/../../resource/rrad.wsdl';
+        $client = new Client($wsdl, ['trace' => true, 'cache_wsdl' => WSDL_CACHE_NONE]);
         $mapper = new ExceptionMapper();
 
         $this->service = new Service($client, $mapper, getenv('UW_HOSTOPIA_USERNAME'), getenv('UW_HOSTOPIA_PASSWORD'));
@@ -73,7 +73,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteNonexistentDomain()
     {
-        $domain = new DomainName('0@uwclub.net');
+        $domain = new DomainName('qatest-0@uwclub.net');
 
         $this->service->deleteDomain($domain);
     }
@@ -85,13 +85,15 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         $domainName = new DomainName($domain);
 
-        $email = sprintf("%s@uwclub.net", substr(md5(uniqid() . time()), 0, 10));
+        $email = $this->generateUniqueEmailAddress();
 
         $response = $this->createNewEmailAccount($email, $domainName);
 
         ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
         ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
         ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Mail account added')));
+
+        $this->removeDomainName($domain);
     }
 
     public function testDeleteExistingEmailAccount()
@@ -101,7 +103,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         $domainName = new DomainName($domain);
 
-        $email = sprintf("%s@uwclub.net", substr(md5(uniqid() . time()), 0, 10));
+        $email = $this->generateUniqueEmailAddress();
 
         $this->createNewEmailAccount($email, $domainName);
 
@@ -112,6 +114,8 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
         ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
         ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Mail account deleted')));
+
+        $this->removeDomainName($domain);
     }
 
     public function testChangeMailPassword()
@@ -121,7 +125,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         $domainName = new DomainName($domain);
 
-        $email = sprintf("%s@uwclub.net", substr(md5(uniqid() . time()), 0, 10));
+        $email = $this->generateUniqueEmailAddress();
 
         $this->createNewEmailAccount($email, $domainName);
 
@@ -132,6 +136,28 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
         ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
         ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Mail account password changed')));
+
+        $this->removeDomainName($domain);
+    }
+
+    public function testGetAllMailAccountsForDomain()
+    {
+        $domain = $this->generateUniqueDomainName();
+        $this->createDomainName($domain);
+
+        $domainName = new DomainName($domain);
+
+        $email = $this->generateUniqueEmailAddress();
+        $this->createNewEmailAccount($email, $domainName);
+
+        $email = $this->generateUniqueEmailAddress();
+        $this->createNewEmailAccount($email, $domainName);
+
+        $mailAccounts = $this->service->getAllMailAccountsForDomain($domainName);
+
+        ha::assertThat('emails count', $mailAccounts, hm::is(hm::arrayWithSize(3)));
+
+        $this->removeDomainName($domain);
     }
 
     /**
@@ -163,7 +189,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     private function generateUniqueDomainName()
     {
-        $domainName = rand(1, 999999) . '@uwclub.net';
+        $domainName = 'qatest-'.rand(1, 999999) . '@uwclub.net';
         return $domainName;
     }
 
@@ -173,5 +199,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $response = $this->service->createMailAccount($mailAccount, $domainName);
 
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    private function generateUniqueEmailAddress()
+    {
+        $email = sprintf("qatest-%s@uwclub.net", substr(md5(uniqid() . time()), 0, 10));
+        return $email;
     }
 }

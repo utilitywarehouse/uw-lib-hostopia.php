@@ -30,10 +30,6 @@ class DomainName
         if (false === filter_var($domainName, FILTER_VALIDATE_EMAIL)) {
             throw new HostopiaException("Domain name should be in format: 000000@uwclub.net");
         }
-
-        if (false === ctype_digit(explode('@', $domainName)[0])) {
-            throw new HostopiaException("Domain name should be in format: 000000@uwclub.net");
-        }
         
         $this->domainName = $domainName;
     }

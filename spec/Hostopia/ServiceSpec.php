@@ -107,4 +107,17 @@ class ServiceSpec extends ObjectBehavior
 
         $this->shouldThrow(HostopiaException::class)->during('changeMailPassword', [$mailAccount, $domainName]);
     }
+
+    public function it_retrieves_email_accounts_associated_to_the_domain(Client $client)
+    {
+        $domain = "000000@uwclub.net";
+
+        $mailboxes = [new MailInfo('test.mailbox')];
+
+        $client->makeCall('getDomainEmails', $this->primaryInfo, $domain)->shouldBeCalled()->willReturn($mailboxes);
+
+        $domainName = new DomainName($domain);
+
+        $this->getAllMailAccountsForDomain($domainName)->shouldReturn($mailboxes);
+    }
 }

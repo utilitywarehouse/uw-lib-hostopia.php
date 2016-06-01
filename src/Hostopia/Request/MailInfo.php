@@ -18,7 +18,7 @@ class MailInfo
      * @param string $account
      * @param string $password
      */
-    public function __construct($account, $password)
+    public function __construct($account, $password = null)
     {
         $this->setAccount($account);
         $this->setPassword($password);
