@@ -8,7 +8,6 @@ use Hamcrest\Matchers as hm;
 use UtilityWarehouse\SDK\Hostopia\Client;
 use UtilityWarehouse\SDK\Hostopia\Exception\Mapper\ExceptionMapper;
 use UtilityWarehouse\SDK\Hostopia\Model\DomainName;
-use UtilityWarehouse\SDK\Hostopia\Model\EmailAccount;
 use UtilityWarehouse\SDK\Hostopia\Response\ResponseInterface;
 use UtilityWarehouse\SDK\Hostopia\Service;
 
@@ -107,9 +106,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->createNewEmailAccount($email, $domainName);
 
-        $mailAccount = new EmailAccount($email);
-
-        $response = $this->service->deleteMailAccount($mailAccount, $domainName);
+        $response = $this->service->deleteMailAccount($email, $domainName);
 
         ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
         ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
@@ -129,9 +126,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->createNewEmailAccount($email, $domainName);
 
-        $mailAccount = new EmailAccount($email, 'somePass');
-
-        $response = $this->service->changeMailPassword($mailAccount, $domainName);
+        $response = $this->service->changeMailPassword($email, 'pass', $domainName);
 
         ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
         ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
@@ -195,8 +190,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     private function createNewEmailAccount($email, DomainName $domainName)
     {
-        $mailAccount = new EmailAccount($email, 'VerySecuryPassword123');
-        $response = $this->service->createMailAccount($mailAccount, $domainName);
+        $response = $this->service->createMailAccount($email, 'VerySecuryPassword123', $domainName);
 
         return $response;
     }
@@ -206,7 +200,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     private function generateUniqueEmailAddress()
     {
-        $email = sprintf("qatest-%s@uwclub.net", substr(md5(uniqid() . time()), 0, 10));
+        $email = sprintf("qatest-%s", substr(md5(uniqid() . time()), 0, 10));
         return $email;
     }
 }

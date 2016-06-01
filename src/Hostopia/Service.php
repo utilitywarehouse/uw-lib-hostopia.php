@@ -2,10 +2,10 @@
 
 namespace UtilityWarehouse\SDK\Hostopia;
 
+use UtilityWarehouse\SDK\Hostopia\Exception\HostopiaException;
 use UtilityWarehouse\SDK\Hostopia\Exception\Mapper\MapperInterface;
 use UtilityWarehouse\SDK\Hostopia\Exception\SoapException;
 use UtilityWarehouse\SDK\Hostopia\Model\DomainName;
-use UtilityWarehouse\SDK\Hostopia\Model\EmailAccount;
 use UtilityWarehouse\SDK\Hostopia\Request\DomainInfo;
 use UtilityWarehouse\SDK\Hostopia\Request\MailInfo;
 use UtilityWarehouse\SDK\Hostopia\Request\PrimaryInfo;
@@ -70,13 +70,15 @@ class Service
     }
 
     /**
-     * @param EmailAccount $account
+     * @param string $account
      * @param DomainName $domain
      * @return ResponseInterface
      */
-    public function createMailAccount(EmailAccount $account, DomainName $domain)
+    public function createMailAccount($account, $password, DomainName $domain)
     {
-        $mailInfo = new MailInfo($account, $account->getPassword());
+        $this->validatePassword($password);
+
+        $mailInfo = new MailInfo($account, $password);
         
         try {
             return $this->client->makeCall('mailAdd', $this->primaryInfo, $domain, $mailInfo);
@@ -86,11 +88,11 @@ class Service
     }
 
     /**
-     * @param EmailAccount $account
+     * @param string $account
      * @param DomainName $domain
      * @return ResponseInterface
      */
-    public function deleteMailAccount(EmailAccount $account, DomainName $domain)
+    public function deleteMailAccount($account, DomainName $domain)
     {
         try {
             return $this->client->makeCall('mailDel', $this->primaryInfo, $domain, $account);
@@ -100,13 +102,15 @@ class Service
     }
 
     /**
-     * @param EmailAccount $account
+     * @param string $account
      * @param DomainName $domain
      * @return ResponseInterface
      */
-    public function changeMailPassword(EmailAccount $account, DomainName $domain)
+    public function changeMailPassword($account, $password, DomainName $domain)
     {
-        $mailInfo = new MailInfo($account, $account->getPassword());
+        $this->validatePassword($password);
+
+        $mailInfo = new MailInfo($account, $password);
 
         try {
             return $this->client->makeCall('mailPwd', $this->primaryInfo, $domain, $mailInfo);
@@ -125,6 +129,17 @@ class Service
             return $this->client->makeCall('getDomainEmails', $this->primaryInfo, $domain);
         } catch (SoapException $e) {
             throw $this->mapper->fromSoapException($e);
+        }
+    }
+
+    /**
+     * @param $password
+     * @throws HostopiaException
+     */
+    private function validatePassword($password)
+    {
+        if ($password && mb_strlen($password) < 3) {
+            throw new HostopiaException("Password should be at least 2 characters length");
         }
     }
 }

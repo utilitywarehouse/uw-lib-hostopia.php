@@ -10,7 +10,6 @@ use UtilityWarehouse\SDK\Hostopia\Exception\HostopiaException;
 use UtilityWarehouse\SDK\Hostopia\Exception\Mapper\MapperInterface;
 use UtilityWarehouse\SDK\Hostopia\Exception\SoapException;
 use UtilityWarehouse\SDK\Hostopia\Model\DomainName;
-use UtilityWarehouse\SDK\Hostopia\Model\EmailAccount;
 use UtilityWarehouse\SDK\Hostopia\Request\DomainInfo;
 use UtilityWarehouse\SDK\Hostopia\Request\MailInfo;
 use UtilityWarehouse\SDK\Hostopia\Request\PrimaryInfo;
@@ -83,21 +82,23 @@ class ServiceSpec extends ObjectBehavior
     public function it_changes_password_for_email(Client $client)
     {
         $domainName = new DomainName("000000@uwclub.net");
-        $mailAccount = new EmailAccount($name = "name@uwclub.net", $pass = 'pass');
-        $mailInfo = new MailInfo($name, $pass);
+        $mailAccount = "name@uwclub.net";
+        $pass = 'pass';
+        $mailInfo = new MailInfo($mailAccount, $pass);
 
         $client->makeCall('mailPwd', $this->primaryInfo, $domainName, $mailInfo)
             ->shouldBeCalled()
             ->willReturn(new ReturnCode(true, "OK:Mail account password changed"));
 
-        $this->changeMailPassword($mailAccount, $domainName)->shouldReturnAnInstanceOf(ResponseInterface::class);
+        $this->changeMailPassword($mailAccount, $pass, $domainName)->shouldReturnAnInstanceOf(ResponseInterface::class);
     }
 
     public function it_maps_Soap_exceptions_if_thrown_during_password_change(Client $client, MapperInterface $mapper)
     {
         $domainName = new DomainName("11111@uwclub.net");
-        $mailAccount = new EmailAccount($name = "name@uwclub.net", $pass = 'pass');
-        $mailInfo = new MailInfo($name, $pass);
+        $mailAccount = "name@uwclub.net";
+        $pass = 'pass';
+        $mailInfo = new MailInfo($mailAccount, $pass);
 
         $exception = new SoapException('Message', 0, new \Exception());
         $client->makeCall('mailPwd', $this->primaryInfo, $domainName, $mailInfo)
@@ -105,7 +106,7 @@ class ServiceSpec extends ObjectBehavior
 
         $mapper->fromSoapException($exception)->shouldBeCalled()->willReturn(new HostopiaException());
 
-        $this->shouldThrow(HostopiaException::class)->during('changeMailPassword', [$mailAccount, $domainName]);
+        $this->shouldThrow(HostopiaException::class)->during('changeMailPassword', [$mailAccount, $pass, $domainName]);
     }
 
     public function it_retrieves_email_accounts_associated_to_the_domain(Client $client)
