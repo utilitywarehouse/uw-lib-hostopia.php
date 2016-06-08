@@ -2,7 +2,7 @@
 
 namespace UtilityWarehouse\SDK\Hostopia\Exception;
 
-class DomainAlreadyExistException extends HostopiaException
+class DomainAlreadyExistsException extends HostopiaException
 {
     public function __construct($message = "Domain already exists.", $code = 0, \Exception $previous = null)
     {

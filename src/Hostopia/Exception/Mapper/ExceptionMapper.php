@@ -2,7 +2,8 @@
 
 namespace UtilityWarehouse\SDK\Hostopia\Exception\Mapper;
 
-use UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistException;
+use UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistsException;
+use UtilityWarehouse\SDK\Hostopia\Exception\EmailAlreadyExistsException;
 use UtilityWarehouse\SDK\Hostopia\Exception\NonExistentDomainException;
 use UtilityWarehouse\SDK\Hostopia\Exception\SoapException;
 use UtilityWarehouse\SDK\Hostopia\Exception\UnknownException;
@@ -10,8 +11,9 @@ use UtilityWarehouse\SDK\Hostopia\Exception\UnknownException;
 class ExceptionMapper implements MapperInterface
 {
     private $exceptionMap = [
-        '14100110' => DomainAlreadyExistException::class,
+        '14100110' => DomainAlreadyExistsException::class,
         '80100080' => NonExistentDomainException::class,
+        '40160020' => EmailAlreadyExistsException::class
     ];
 
     public function fromSoapException(SoapException $exception)

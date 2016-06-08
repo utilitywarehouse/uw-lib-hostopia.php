@@ -6,6 +6,7 @@ use Hamcrest\MatcherAssert as ha;
 use Hamcrest\Matchers as hm;
 
 use UtilityWarehouse\SDK\Hostopia\Client;
+use UtilityWarehouse\SDK\Hostopia\Exception\EmailAlreadyExistsException;
 use UtilityWarehouse\SDK\Hostopia\Exception\Mapper\ExceptionMapper;
 use UtilityWarehouse\SDK\Hostopia\Model\DomainName;
 use UtilityWarehouse\SDK\Hostopia\Response\ResponseInterface;
@@ -41,7 +42,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistException
+     * @expectedException \UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistsException
      */
     public function testCreateDomainWhichAlreadyExists()
     {
@@ -93,6 +94,33 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Mail account added')));
 
         $this->removeDomainName($domain);
+    }
+
+    /**
+     * @expectedException \UtilityWarehouse\SDK\Hostopia\Exception\EmailAlreadyExistsException
+     */
+    public function testAddDuplicateEmailAccount()
+    {
+        $domain = $this->generateUniqueDomainName();
+        $this->createDomainName($domain);
+
+        $domainName = new DomainName($domain);
+
+        $email = $this->generateUniqueEmailAddress();
+
+        $response = $this->createNewEmailAccount($email, $domainName);
+        ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
+        ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
+        ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Mail account added')));
+
+        $secondDomain = $this->generateUniqueDomainName();
+        $this->createDomainName($secondDomain);
+        $secondDomainName = new DomainName($secondDomain);
+
+        $this->createNewEmailAccount($email, $secondDomainName);
+
+        $this->removeDomainName($domain);
+        $this->removeDomainName($secondDomain);
     }
 
     public function testDeleteExistingEmailAccount()

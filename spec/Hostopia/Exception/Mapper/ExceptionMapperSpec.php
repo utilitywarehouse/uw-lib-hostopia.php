@@ -4,7 +4,7 @@ namespace spec\UtilityWarehouse\SDK\Hostopia\Exception\Mapper;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistException;
+use UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistsException;
 use UtilityWarehouse\SDK\Hostopia\Exception\Mapper\ExceptionMapper;
 use UtilityWarehouse\SDK\Hostopia\Exception\NonExistentDomainException;
 use UtilityWarehouse\SDK\Hostopia\Exception\SoapException;
@@ -19,7 +19,7 @@ class ExceptionMapperSpec extends ObjectBehavior
     {
         $soapException->getFaultCode()->willReturn('14100110');
 
-        $this->fromSoapException($soapException)->shouldReturnAnInstanceOf(DomainAlreadyExistException::class);
+        $this->fromSoapException($soapException)->shouldReturnAnInstanceOf(DomainAlreadyExistsException::class);
     }
 
     function it_maps_SoapException_to_NonExistentDomainException_when_domain_does_not_exist(SoapException $soapException)

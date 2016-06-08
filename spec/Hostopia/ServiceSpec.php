@@ -5,7 +5,7 @@ namespace spec\UtilityWarehouse\SDK\Hostopia;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use UtilityWarehouse\SDK\Hostopia\Client;
-use UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistException;
+use UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistsException;
 use UtilityWarehouse\SDK\Hostopia\Exception\HostopiaException;
 use UtilityWarehouse\SDK\Hostopia\Exception\Mapper\MapperInterface;
 use UtilityWarehouse\SDK\Hostopia\Exception\SoapException;
@@ -71,11 +71,11 @@ class ServiceSpec extends ObjectBehavior
         $client->makeCall('newDomain', $this->primaryInfo, $domain, $domainInfo)
             ->willThrow($soapException);
 
-        $mapper->fromSoapException($soapException)->willReturn(new DomainAlreadyExistException('Domain already exists.', 0, $soapException));
+        $mapper->fromSoapException($soapException)->willReturn(new DomainAlreadyExistsException('Domain already exists.', 0, $soapException));
 
         $domainName = new DomainName($domain);
 
-        $this->shouldThrow(DomainAlreadyExistException::class)
+        $this->shouldThrow(DomainAlreadyExistsException::class)
             ->during('createNewDomain', [$domainName, $password]);
     }
 
