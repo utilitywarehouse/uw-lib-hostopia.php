@@ -132,6 +132,17 @@ class Service
         }
     }
 
+    public function changeDomainPassword(DomainName $domain, $password)
+    {
+        $this->validatePassword($password);
+
+        try {
+            return $this->client->makeCall('setPassword', $this->primaryInfo, $domain, $password);
+        } catch (SoapException $e) {
+            throw $this->mapper->fromSoapException($e);
+        }
+    }
+
     /**
      * @param $password
      * @throws HostopiaException

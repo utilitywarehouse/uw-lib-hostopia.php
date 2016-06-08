@@ -41,6 +41,22 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->removeDomainName($domain);
     }
 
+    public function testChangeDomainPassword()
+    {
+        $domain = $this->generateUniqueDomainName();
+
+        $this->createDomainName($domain);
+        $domainName = new DomainName($domain);
+
+        $response = $this->service->changeDomainPassword($domainName, 'SomeNewPassword123');
+
+        ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
+        ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
+        ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK:Password set')));
+
+        $this->removeDomainName($domain);
+    }
+
     /**
      * @expectedException \UtilityWarehouse\SDK\Hostopia\Exception\DomainAlreadyExistsException
      */
