@@ -37,14 +37,14 @@ class ServiceSpec extends ObjectBehavior
     {
         $domain = "000000@uwclub.net";
         $password = 'password';
-        $domainInfo = new DomainInfo(Service::PACKAGE, $password);
+        $domainInfo = new DomainInfo('PACKAGE', $password);
 
         $client->makeCall('newDomain', $this->primaryInfo, $domain, $domainInfo)
             ->willReturn(new ReturnCode(true, "OK:Domain added"));
 
         $domainName = new DomainName($domain);
 
-        $this->createNewDomain($domainName, $password)->shouldReturnAnInstanceOf(ResponseInterface::class);
+        $this->createNewDomain($domainName, $password, 'PACKAGE')->shouldReturnAnInstanceOf(ResponseInterface::class);
     }
 
     public function it_deletes_existing_domain(Client $client)
@@ -63,7 +63,7 @@ class ServiceSpec extends ObjectBehavior
     {
         $domain = "000000@uwclub.net";
         $password = 'password';
-        $domainInfo = new DomainInfo(Service::PACKAGE, $password);
+        $domainInfo = new DomainInfo('PACKAGE', $password);
 
         $fault = new \SoapFault('14100110', 'ERR:Domain \'000000@uwclub.net\' already exists in database');
         $soapException = new SoapException('Domain already exists.', 0, $fault);
@@ -76,7 +76,7 @@ class ServiceSpec extends ObjectBehavior
         $domainName = new DomainName($domain);
 
         $this->shouldThrow(DomainAlreadyExistsException::class)
-            ->during('createNewDomain', [$domainName, $password]);
+            ->during('createNewDomain', [$domainName, $password, 'PACKAGE']);
     }
 
     public function it_changes_password_for_email(Client $client)

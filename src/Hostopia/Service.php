@@ -13,8 +13,6 @@ use UtilityWarehouse\SDK\Hostopia\Response\ResponseInterface;
 
 class Service
 {
-    const PACKAGE = 'EMAILONLY102788';
-
     /**
      * @var Client
      */
@@ -45,9 +43,9 @@ class Service
      * @param $password
      * @return ResponseInterface
      */
-    public function createNewDomain(DomainName $domain, $password)
+    public function createNewDomain(DomainName $domain, $password, $package)
     {
-        $domainInfo = new DomainInfo(self::PACKAGE, $password);
+        $domainInfo = new DomainInfo($package, $password);
 
         try {
             return $this->client->makeCall('newDomain', $this->primaryInfo, $domain, $domainInfo);       

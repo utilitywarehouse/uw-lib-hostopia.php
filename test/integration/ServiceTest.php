@@ -206,7 +206,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     private function createDomainName($domainName)
     {
         $domain = new DomainName($domainName);
-        $response = $this->service->createNewDomain($domain, 'Password1');
+        $response = $this->service->createNewDomain($domain, 'Password1', 'EMAILONLY102788');
 
         return $response;
     }
