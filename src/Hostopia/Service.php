@@ -118,6 +118,23 @@ class Service
     }
 
     /**
+     * @param string $account
+     * @param DomainName $domain
+     * @param array $allowList
+     * @return ResponseInterface
+     */
+    public function setAllowList($account, DomainName $domain, array $allowList)
+    {
+        $mailInfo = new MailInfo($account);
+
+        try {
+            return $this->client->makeCall('mailSetSFAllowList', $this->primaryInfo, $domain, $mailInfo, $allowList);
+        } catch (SoapException $e) {
+            throw $this->mapper->fromSoapException($e);
+        }
+    }
+
+    /**
      * @param DomainName $domain
      * @return MailInfo[]
      */
@@ -130,6 +147,11 @@ class Service
         }
     }
 
+    /**
+     * @param DomainName $domain
+     * @param string $password
+     * @return ResponseInterface
+     */
     public function changeDomainPassword(DomainName $domain, $password)
     {
         $this->validatePassword($password);

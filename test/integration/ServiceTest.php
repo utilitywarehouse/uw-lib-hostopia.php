@@ -179,6 +179,32 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->removeDomainName($domain);
     }
 
+    public function testSetAllowList()
+    {
+        $domain = $this->generateUniqueDomainName();
+        $this->createDomainName($domain);
+
+        $domainName = new DomainName($domain);
+
+        $email = $this->generateUniqueEmailAddress();
+
+        $this->createNewEmailAccount($email, $domainName);
+
+        $allowList = [
+            'bounce.news.utilitywarehouse.co.uk',
+            'news.utilitywarehouse.co.uk',
+            'utilitywarehouse.co.uk',
+        ];
+
+        $response = $this->service->setAllowList($email, $domainName, $allowList);
+
+        ha::assertThat('valid response', $response, hm::is(hm::anInstanceOf(ResponseInterface::class)));
+        ha::assertThat('successful response', $response->isSuccessful(), hm::is(hm::equalTo(true)));
+        ha::assertThat('response message', $response->message(), hm::is(hm::equalTo('OK: Spam filter allow list changed')));
+
+        $this->removeDomainName($domain);
+    }
+
     public function testGetAllMailAccountsForDomain()
     {
         $domain = $this->generateUniqueDomainName();
@@ -206,7 +232,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     private function createDomainName($domainName)
     {
         $domain = new DomainName($domainName);
-        $response = $this->service->createNewDomain($domain, 'Password1', 'EMAILONLY102788');
+        $response = $this->service->createNewDomain($domain, 'Password1', 'MWEB7BASIC1HID2788');
 
         return $response;
     }
@@ -234,7 +260,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     private function createNewEmailAccount($email, DomainName $domainName)
     {
-        $response = $this->service->createMailAccount($email, 'VerySecuryPassword123', $domainName);
+        $response = $this->service->createMailAccount($email, 'VerySecurePassword123', $domainName);
 
         return $response;
     }
